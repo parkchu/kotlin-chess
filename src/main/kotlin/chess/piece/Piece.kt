@@ -1,9 +1,9 @@
 package chess.piece
 
-import chess.board.domain.Point
+import chess.constant.PiecesPoint
+import chess.constant.Team
 
 interface Piece {
-    val value: Int
-
-    fun getMovablePoint(point: Point): List<Point>
+    val team: Team
+    val value: PiecesPoint
 }
