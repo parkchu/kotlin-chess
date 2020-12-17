@@ -6,5 +6,6 @@ enum class PiecesPoint(value: Int) {
     KNIGHT(3),
     ROOK(5),
     QUEEN(9),
-    KING(10)
+    KING(10),
+    BASIC(0)
 }
