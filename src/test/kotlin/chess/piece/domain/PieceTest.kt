@@ -1,21 +1,20 @@
 package chess.piece.domain
 
-import chess.constant.PiecesPoint.PAWN
-import chess.constant.Team
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-class PawnTest {
-    private val whitePawn = Pawn(Team.WHITE)
-    private val blackPawn = Pawn(Team.BLACK)
+class PieceTest {
+    private val whitePawn = Piece.WHITE_PAWN
+    private val blackPawn = Piece.BLACK_PAWN
 
     @Test
     fun makePawn() {
-        assertThat(whitePawn.value).isEqualTo(PAWN)
-        assertThat(whitePawn.team).isEqualTo(Team.WHITE)
-        assertThat(blackPawn.value).isEqualTo(PAWN)
-        assertThat(blackPawn.team).isEqualTo(Team.BLACK)
+        assertTrue(whitePawn.isWhite())
+        assertThat(whitePawn.type).isEqualTo(Piece.Type.PAWN)
+        assertTrue(blackPawn.isBlack())
+        assertThat(blackPawn.type).isEqualTo(Piece.Type.PAWN)
     }
 
     @DisplayName("Black Pawn 이면 P를 White Pawn 이면 p를 출력한다.")
