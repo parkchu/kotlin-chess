@@ -1,13 +1,13 @@
 package chess.piece.domain
 
-class Piece(private val team: Team, val type: Type) {
+class Piece(val team: Team, val type: Type) {
     enum class Team(val value: String) {
         WHITE("white"),
         BLACK("black"),
         EMPTY("empty")
     }
 
-    enum class Type(point: Int, val string: String) {
+    enum class Type(val score: Int, val string: String) {
         PAWN(1, "p"),
         BISHOP(3, "b"),
         KNIGHT(3, "n"),
