@@ -28,6 +28,10 @@ class Points(column: Int, raw: Int) {
         rawPieces[column] = piece
     }
 
+    private fun getRawPieces(raw: Int): MutableMap<Int, Piece> {
+        return _points[raw] ?: throw IllegalArgumentException()
+    }
+
     fun findIt(column: Int, raw: Int): Piece {
         val rawPieces = getRawPieces(raw)
         return rawPieces[column] ?: throw IllegalArgumentException()
@@ -41,10 +45,5 @@ class Points(column: Int, raw: Int) {
     fun deleteIt(column: Int, raw: Int) {
         val rawPieces = getRawPieces(raw)
         rawPieces[column] = Piece.EMPTY
-    }
-
-
-    fun getRawPieces(raw: Int): MutableMap<Int, Piece> {
-        return _points[raw] ?: throw IllegalArgumentException()
     }
 }

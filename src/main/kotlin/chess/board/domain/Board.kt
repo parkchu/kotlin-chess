@@ -2,12 +2,12 @@ package chess.board.domain
 
 import chess.line.domain.Line
 import chess.piece.domain.Piece
+import chess.piece.domain.Pieces
 import chess.point.domain.Points
 
 class Board {
     private val _points: Points = Points(COLUMN_LENGTH, RAW_LENGTH)
-    private val _blackPieces: MutableList<Piece> = mutableListOf()
-    private val _whitePieces: MutableList<Piece> = mutableListOf()
+    private val _pieces: Pieces = Pieces()
 
     fun init() {
         setPawnAllRaw(BLACK_FRONT_LINE, Piece.BLACK_PAWN)
@@ -18,51 +18,45 @@ class Board {
     private fun setPawnAllRaw(raw: Int, piece: Piece) {
         repeat(COLUMN_LENGTH) {
             _points.addIt(it + 1, raw, piece)
-            addPieceOfTeam(piece)
+            _pieces.addPieceOfTeam(piece)
         }
     }
 
     private fun setPieces() {
-        val rawBlackPieces = _points.getRawPieces(BLACK_BACK_LINE)
-        val rawWhitePieces = _points.getRawPieces(WHITE_BACK_LINE)
-        repeat(COLUMN_LENGTH) { setPiece(it + 1, rawBlackPieces, rawWhitePieces) }
+        repeat(COLUMN_LENGTH) { setPiece(it + 1) }
     }
 
-    private fun setPiece(column: Int, rawBlackPieces: MutableMap<Int, Piece>, rawWhitePieces: MutableMap<Int, Piece>) {
-        if (column == 1 || column == 8) {
-            rawBlackPieces[column] = Piece.BLACK_ROOK
-            rawWhitePieces[column] = Piece.WHITE_ROOK
-            addPieceOfTeam(Piece.BLACK_ROOK)
-            addPieceOfTeam(Piece.WHITE_ROOK)
-        } else if (column == 2 || column == 7) {
-            rawBlackPieces[column] = Piece.BLACK_KNIGHT
-            rawWhitePieces[column] = Piece.WHITE_KNIGHT
-            addPieceOfTeam(Piece.BLACK_KNIGHT)
-            addPieceOfTeam(Piece.WHITE_KNIGHT)
-        } else if (column == 3 || column == 6) {
-            rawBlackPieces[column] = Piece.BLACK_BISHOP
-            rawWhitePieces[column] = Piece.WHITE_BISHOP
-            addPieceOfTeam(Piece.BLACK_BISHOP)
-            addPieceOfTeam(Piece.WHITE_BISHOP)
-        } else if (column == 4) {
-            rawBlackPieces[column] = Piece.BLACK_QUEEN
-            rawWhitePieces[column] = Piece.WHITE_QUEEN
-            addPieceOfTeam(Piece.BLACK_QUEEN)
-            addPieceOfTeam(Piece.WHITE_QUEEN)
-        } else if (column == 5) {
-            rawBlackPieces[column] = Piece.BLACK_KING
-            rawWhitePieces[column] = Piece.WHITE_KING
-            addPieceOfTeam(Piece.BLACK_KING)
-            addPieceOfTeam(Piece.WHITE_KING)
+    private fun setPiece(column: Int) {
+        when (column) {
+            ROOK -> {
+                addPieces(column, BLACK_BACK_LINE, Piece.BLACK_ROOK)
+                addPieces(column, WHITE_BACK_LINE, Piece.WHITE_ROOK)
+            }
+            KNIGHT -> {
+                addPieces(column, BLACK_BACK_LINE, Piece.BLACK_KNIGHT)
+                addPieces(column, WHITE_BACK_LINE, Piece.WHITE_KNIGHT)
+            }
+            BISHOP -> {
+                addPieces(column, BLACK_BACK_LINE, Piece.BLACK_BISHOP)
+                addPieces(column, WHITE_BACK_LINE, Piece.WHITE_BISHOP)
+            }
+            QUEEN -> {
+                addPieces(column, BLACK_BACK_LINE, Piece.BLACK_QUEEN)
+                addPieces(column, WHITE_BACK_LINE, Piece.WHITE_QUEEN)
+            }
+            KING -> {
+                addPieces(column, BLACK_BACK_LINE, Piece.BLACK_KING)
+                addPieces(column, WHITE_BACK_LINE, Piece.WHITE_KING)
+            }
         }
     }
 
-    private fun addPieceOfTeam(piece: Piece) {
-        if (piece.isBlack()) {
-            _blackPieces.add(piece)
-        }
-        if (piece.isWhite()) {
-            _whitePieces.add(piece)
+    private fun addPieces(column: Int, raw: Int, piece: Piece) {
+        _points.addIt(column, raw, piece)
+        _pieces.addPieceOfTeam(piece)
+        if (column < 4) {
+            _points.addIt(9 - column, raw, piece)
+            _pieces.addPieceOfTeam(piece)
         }
     }
 
@@ -87,7 +81,7 @@ class Board {
     fun addIt(position: Position, piece: Piece) {
         checkColumn(position.column)
         _points.addIt(position.column, position.raw, piece)
-        addPieceOfTeam(piece)
+        _pieces.addPieceOfTeam(piece)
     }
 
     private fun checkColumn(column: Int) {
@@ -97,22 +91,11 @@ class Board {
     }
 
     fun getPiecesNumber(piece: Piece): Int {
-        val pieces = _blackPieces + _whitePieces
-        return pieces.count { it.team == piece.team && it.type == piece.type }
+        return _pieces.getPiecesNumber(piece)
     }
 
     fun getScore(team: Piece.Team): Int {
-        return when (team) {
-            Piece.Team.BLACK -> {
-                _blackPieces.sumBy { it.type.score }
-            }
-            Piece.Team.WHITE -> {
-                _whitePieces.sumBy { it.type.score }
-            }
-            else -> {
-                throw IllegalArgumentException()
-            }
-        }
+        return _pieces.getScore(team)
     }
 
     companion object {
@@ -122,6 +105,11 @@ class Board {
         const val WHITE_BACK_LINE = 8
         const val COLUMN_LENGTH = 8
         const val RAW_LENGTH = 8
+        const val ROOK = 1
+        const val KNIGHT = 2
+        const val BISHOP = 3
+        const val QUEEN = 4
+        const val KING = 5
         val COLUMN_RANGE = 1..8
 
         fun toPosition(stringPosition: String): Position = Position(stringPosition)
