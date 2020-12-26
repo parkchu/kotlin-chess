@@ -2,44 +2,59 @@ package chess.board.domain
 
 import chess.line.domain.Line
 import chess.piece.domain.Piece
+import chess.point.domain.Points
 
 class Board {
-    private val _pieces: Map<Int, MutableMap<String, Piece>> = makeMap()
+    private val _points: Points = Points(COLUMN_LENGTH, RAW_LENGTH)
     private val _blackPieces: MutableList<Piece> = mutableListOf()
     private val _whitePieces: MutableList<Piece> = mutableListOf()
 
-    private fun makeMap(): Map<Int, MutableMap<String, Piece>> {
-        val mutableMap = mutableMapOf<Int, MutableMap<String, Piece>>()
-        repeat(8) {
-            mutableMap[it + 1] = makeColumn()
-        }
-        return mutableMap
-    }
-
-    private fun makeColumn(): MutableMap<String, Piece> {
-        val smallMap = mutableMapOf<String, Piece>()
-        COLUMN.forEach {
-            smallMap[it] = Piece.EMPTY
-        }
-        return smallMap
-    }
-
     fun init() {
-        setPawnAllRaw(2, Piece.BLACK_PAWN)
-        setPawnAllRaw(7, Piece.WHITE_PAWN)
+        setPawnAllRaw(BLACK_FRONT_LINE, Piece.BLACK_PAWN)
+        setPawnAllRaw(WHITE_FRONT_LINE, Piece.WHITE_PAWN)
         setPieces() // 폰을 제외한 나머지 말들 세팅
     }
 
     private fun setPawnAllRaw(raw: Int, piece: Piece) {
-        val rawPieces = getRawPieces(raw)
-        rawPieces.forEach {
-            rawPieces[it.key] = piece
+        repeat(COLUMN_LENGTH) {
+            _points.addIt(it + 1, raw, piece)
             addPieceOfTeam(piece)
         }
     }
 
-    private fun getRawPieces(raw: Int): MutableMap<String, Piece> {
-        return _pieces[raw] ?: throw IllegalArgumentException()
+    private fun setPieces() {
+        val rawBlackPieces = _points.getRawPieces(BLACK_BACK_LINE)
+        val rawWhitePieces = _points.getRawPieces(WHITE_BACK_LINE)
+        repeat(COLUMN_LENGTH) { setPiece(it + 1, rawBlackPieces, rawWhitePieces) }
+    }
+
+    private fun setPiece(column: Int, rawBlackPieces: MutableMap<Int, Piece>, rawWhitePieces: MutableMap<Int, Piece>) {
+        if (column == 1 || column == 8) {
+            rawBlackPieces[column] = Piece.BLACK_ROOK
+            rawWhitePieces[column] = Piece.WHITE_ROOK
+            addPieceOfTeam(Piece.BLACK_ROOK)
+            addPieceOfTeam(Piece.WHITE_ROOK)
+        } else if (column == 2 || column == 7) {
+            rawBlackPieces[column] = Piece.BLACK_KNIGHT
+            rawWhitePieces[column] = Piece.WHITE_KNIGHT
+            addPieceOfTeam(Piece.BLACK_KNIGHT)
+            addPieceOfTeam(Piece.WHITE_KNIGHT)
+        } else if (column == 3 || column == 6) {
+            rawBlackPieces[column] = Piece.BLACK_BISHOP
+            rawWhitePieces[column] = Piece.WHITE_BISHOP
+            addPieceOfTeam(Piece.BLACK_BISHOP)
+            addPieceOfTeam(Piece.WHITE_BISHOP)
+        } else if (column == 4) {
+            rawBlackPieces[column] = Piece.BLACK_QUEEN
+            rawWhitePieces[column] = Piece.WHITE_QUEEN
+            addPieceOfTeam(Piece.BLACK_QUEEN)
+            addPieceOfTeam(Piece.WHITE_QUEEN)
+        } else if (column == 5) {
+            rawBlackPieces[column] = Piece.BLACK_KING
+            rawWhitePieces[column] = Piece.WHITE_KING
+            addPieceOfTeam(Piece.BLACK_KING)
+            addPieceOfTeam(Piece.WHITE_KING)
+        }
     }
 
     private fun addPieceOfTeam(piece: Piece) {
@@ -51,77 +66,34 @@ class Board {
         }
     }
 
-    private fun setPieces() {
-        val rawBlackPieces = getRawPieces(1)
-        val rawWhitePieces = getRawPieces(8)
-        COLUMN.forEach { setPiece(it, rawBlackPieces, rawWhitePieces) }
-    }
-
-    private fun setPiece(column: String, rawBlackPieces: MutableMap<String, Piece>, rawWhitePieces: MutableMap<String, Piece>) {
-        if (column == "a" || column == "h") {
-            rawBlackPieces[column] = Piece.BLACK_ROOK
-            rawWhitePieces[column] = Piece.WHITE_ROOK
-            addPieceOfTeam(Piece.BLACK_ROOK)
-            addPieceOfTeam(Piece.WHITE_ROOK)
-        } else if (column == "b" || column == "g") {
-            rawBlackPieces[column] = Piece.BLACK_KNIGHT
-            rawWhitePieces[column] = Piece.WHITE_KNIGHT
-            addPieceOfTeam(Piece.BLACK_KNIGHT)
-            addPieceOfTeam(Piece.WHITE_KNIGHT)
-        } else if (column == "c" || column == "f") {
-            rawBlackPieces[column] = Piece.BLACK_BISHOP
-            rawWhitePieces[column] = Piece.WHITE_BISHOP
-            addPieceOfTeam(Piece.BLACK_BISHOP)
-            addPieceOfTeam(Piece.WHITE_BISHOP)
-        } else if (column == "d") {
-            rawBlackPieces[column] = Piece.BLACK_QUEEN
-            rawWhitePieces[column] = Piece.WHITE_QUEEN
-            addPieceOfTeam(Piece.BLACK_QUEEN)
-            addPieceOfTeam(Piece.WHITE_QUEEN)
-        } else if (column == "e") {
-            rawBlackPieces[column] = Piece.BLACK_KING
-            rawWhitePieces[column] = Piece.WHITE_KING
-            addPieceOfTeam(Piece.BLACK_KING)
-            addPieceOfTeam(Piece.WHITE_KING)
-        }
-    }
-
     fun print(): String {
         val line = Line()
-        val piecesList = mapToList()
+        val piecesList = _points.mapToList()
         piecesList.forEach {
             pieceToString(it, line)
         }
         return line.string
     }
 
-    private fun mapToList(): List<List<Piece>> = _pieces.map { pieces -> pieces.value.map { it.value } }
-
     private fun pieceToString(rawPieces: List<Piece>, line: Line) {
         val string = rawPieces.joinToString(separator = "", transform = { piece -> piece.print() })
         line.add(string)
     }
 
-    fun findPieceIt(position: String): Piece {
-        val column = position.first().toString()
-        val raw = Character.getNumericValue(position.last())
-        val rawPieces = getRawPieces(raw)
-        return rawPieces[column] ?: throw IllegalArgumentException()
+    fun findPieceIt(position: Position): Piece {
+        return _points.findIt(position.column, position.raw)
     }
 
-    fun addIt(position: String, piece: Piece) {
-        val column = checkColumn(position.first().toString())
-        val raw = Character.getNumericValue(position.last())
-        val rawPieces = getRawPieces(raw)
-        rawPieces[column] = piece
+    fun addIt(position: Position, piece: Piece) {
+        checkColumn(position.column)
+        _points.addIt(position.column, position.raw, piece)
         addPieceOfTeam(piece)
     }
 
-    private fun checkColumn(column: String): String {
-        if (COLUMN.contains(column)) {
-            return column
+    private fun checkColumn(column: Int) {
+        if (column !in COLUMN_RANGE) {
+            throw IllegalArgumentException()
         }
-        throw IllegalArgumentException()
     }
 
     fun getPiecesNumber(piece: Piece): Int {
@@ -144,6 +116,14 @@ class Board {
     }
 
     companion object {
-        val COLUMN = listOf("a", "b", "c", "d", "e", "f", "g", "h")
+        const val BLACK_FRONT_LINE = 2
+        const val BLACK_BACK_LINE = 1
+        const val WHITE_FRONT_LINE = 7
+        const val WHITE_BACK_LINE = 8
+        const val COLUMN_LENGTH = 8
+        const val RAW_LENGTH = 8
+        val COLUMN_RANGE = 1..8
+
+        fun toPosition(stringPosition: String): Position = Position(stringPosition)
     }
 }

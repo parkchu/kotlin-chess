@@ -24,7 +24,7 @@ class BoardTest {
         val board = Board()
         board.init()
 
-        val piece = board.findPieceIt("a1")
+        val piece = board.findPieceIt(A1)
 
         assertThat(piece.type).isEqualTo(Piece.Type.ROOK)
         assertThat(piece.print()).isEqualTo("R")
@@ -37,11 +37,11 @@ class BoardTest {
         board.init()
 
         assertThatThrownBy {
-            board.findPieceIt("q1")
+            board.findPieceIt(Q1)
         }.isInstanceOf(IllegalArgumentException::class.java)
 
         assertThatThrownBy {
-            board.findPieceIt("a0")
+            board.findPieceIt(A0)
         }.isInstanceOf(IllegalArgumentException::class.java)
     }
 
@@ -49,18 +49,17 @@ class BoardTest {
     fun addPiece() {
         val board = Board()
 
-        val position = "a4"
         val piece = Piece.BLACK_KING
-        board.addIt(position, piece)
+        board.addIt(A4, piece)
 
-        assertThat(board.findPieceIt(position)).isEqualTo(piece)
+        assertThat(board.findPieceIt(A4)).isEqualTo(piece)
     }
 
     @Test
     fun getPiecesNumber() {
         val board = Board()
         board.init()
-        board.addIt("a4", Piece.WHITE_KNIGHT)
+        board.addIt(A4, Piece.WHITE_KNIGHT)
 
         val blackKnightNumber = board.getPiecesNumber(Piece.BLACK_KNIGHT)
         val whiteKnightNumber = board.getPiecesNumber(Piece.WHITE_KNIGHT)
@@ -73,7 +72,7 @@ class BoardTest {
     fun getScore() {
         val board = Board()
         board.init()
-        board.addIt("a4", Piece.WHITE_QUEEN)
+        board.addIt(A4, Piece.WHITE_QUEEN)
 
         val blackScore = board.getScore(Piece.Team.BLACK)
         val whiteScore = board.getScore(Piece.Team.WHITE)
@@ -84,5 +83,9 @@ class BoardTest {
 
     companion object {
         const val MIDDLE_BLANK = "........\n........\n........\n........"
+        val A1 = Position("a1")
+        val Q1 = Position("q1")
+        val A0 = Position("a0")
+        val A4 = Position("a4")
     }
 }
