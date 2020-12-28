@@ -1,6 +1,6 @@
 package chess.point.domain
 
-import chess.piece.domain.Piece.Companion.BLACK_KING
+import chess.piece.domain.Piece
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -15,9 +15,20 @@ class PointsTest {
     fun addPieceAndFindPiece() {
         val points = Points(8, 8)
 
-        points.addIt(1, 1, BLACK_KING)
+        points.addIt(1, 1, Piece.BLACK_KING)
 
         val piece = points.findIt(1, 1)
-        assertThat(piece).isEqualTo(BLACK_KING)
+        assertThat(piece).isEqualTo(Piece.BLACK_KING)
+    }
+
+    @Test
+    fun deletePiece() {
+        val points = Points(8, 8)
+        points.addIt(1, 1, Piece.BLACK_KING)
+
+        points.deleteIt(1, 1)
+
+        val piece = points.findIt(1, 1)
+        assertThat(piece).isEqualTo(Piece.EMPTY)
     }
 }

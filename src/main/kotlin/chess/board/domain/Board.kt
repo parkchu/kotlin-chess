@@ -99,7 +99,9 @@ class Board {
     }
 
     fun move(sourcePosition: Position, targetPosition: Position) {
-
+        val piece = findPieceIt(sourcePosition)
+        _points.deleteIt(sourcePosition.column, sourcePosition.raw)
+        _points.addIt(targetPosition.column, targetPosition.raw, piece)
     }
 
     companion object {
