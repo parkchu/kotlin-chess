@@ -27,7 +27,7 @@ class BoardTest {
 
         val piece = board.findPieceIt(A1)
 
-        assertThat(piece.score).isEqualTo(5)
+        assertThat(piece.type).isEqualTo(Piece.Type.ROOK)
         assertThat(piece.print()).isEqualTo("R")
     }
 

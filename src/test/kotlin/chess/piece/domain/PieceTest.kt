@@ -12,9 +12,9 @@ class PieceTest {
     @Test
     fun makePawn() {
         assertTrue(whitePawn.isWhite())
-        assertThat(whitePawn.score).isEqualTo(1)
+        assertThat(whitePawn.type).isEqualTo(Piece.Type.PAWN)
         assertTrue(blackPawn.isBlack())
-        assertThat(blackPawn.score).isEqualTo(1)
+        assertThat(blackPawn.type).isEqualTo(Piece.Type.PAWN)
     }
 
     @DisplayName("Black Pawn 이면 P를 White Pawn 이면 p를 출력한다.")

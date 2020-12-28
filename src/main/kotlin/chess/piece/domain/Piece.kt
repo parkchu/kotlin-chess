@@ -17,15 +17,13 @@ abstract class Piece(val team: Team) {
         EMPTY(0, ".")
     }
 
-    open val score: Int = 0
-
-    open val name: String = "."
+    open val type: Type = Type.EMPTY
 
     fun print(): String {
         return if (team == Team.WHITE) {
-            name
+            type.string
         } else {
-            name.toUpperCase()
+            type.string.toUpperCase()
         }
     }
 

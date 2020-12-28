@@ -15,16 +15,16 @@ class Pieces {
 
     fun getPiecesNumber(piece: Piece): Int {
         val pieces = _blackPieces + _whitePieces
-        return pieces.count { it.team == piece.team && it.name == piece.name }
+        return pieces.count { it.team == piece.team && it.type == piece.type }
     }
 
     fun getScore(team: Piece.Team): Int {
         return when (team) {
             Piece.Team.BLACK -> {
-                _blackPieces.sumBy { it.score }
+                _blackPieces.sumBy { it.type.score }
             }
             Piece.Team.WHITE -> {
-                _whitePieces.sumBy { it.score }
+                _whitePieces.sumBy { it.type.score }
             }
             else -> {
                 throw IllegalArgumentException()
