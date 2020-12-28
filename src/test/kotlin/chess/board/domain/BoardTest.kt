@@ -95,6 +95,31 @@ class BoardTest {
         assertThat(board.findPieceIt(targetPosition)).isEqualTo(Piece.WHITE_PAWN)
     }
 
+    @DisplayName("말이 없는 위치를 움직일려고 할 경우의 예외처리")
+    @Test
+    fun movePiece2() {
+        val board = Board()
+
+        assertThatThrownBy {
+            board.move(A1, A7)
+        }.hasMessage("비어있는 칸은 움직일수 없습니다.")
+    }
+
+    @DisplayName("잘못된 위치를 보낼 경우의 예외처리")
+    @Test
+    fun movePiece3() {
+        val board = Board()
+        board.init()
+
+        assertThatThrownBy {
+            board.move(A0, A7)
+        }.hasMessage("존재하지 않는 위치입니다.")
+
+        assertThatThrownBy {
+            board.move(A7, A0)
+        }.hasMessage("존재하지 않는 위치입니다.")
+    }
+
     companion object {
         const val MIDDLE_BLANK = "........\n........\n........\n........"
         val A1 = Position("a1")

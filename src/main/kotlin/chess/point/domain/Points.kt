@@ -25,22 +25,22 @@ class Points(column: Int, raw: Int) {
 
     fun addIt(column: Int, raw: Int, piece: Piece) {
         val rawPieces = getRawPieces(raw)
-        rawPieces[column] ?: throw IllegalArgumentException()
+        rawPieces[column] ?: throw IllegalArgumentException("존재하지 않는 위치입니다.")
         rawPieces[column] = piece
     }
 
     private fun getRawPieces(raw: Int): MutableMap<Int, Piece> {
-        return _points[raw] ?: throw IllegalArgumentException()
+        return _points[raw] ?: throw IllegalArgumentException("존재하지 않는 위치입니다.")
     }
 
     fun findIt(column: Int, raw: Int): Piece {
         val rawPieces = getRawPieces(raw)
-        return rawPieces[column] ?: throw IllegalArgumentException()
+        return rawPieces[column] ?: throw IllegalArgumentException("존재하지 않는 위치입니다.")
     }
 
     fun deleteIt(column: Int, raw: Int) {
         val rawPieces = getRawPieces(raw)
-        rawPieces[column] ?: throw IllegalArgumentException()
+        rawPieces[column] ?: throw IllegalArgumentException("존재하지 않는 위치입니다.")
         rawPieces[column] = Piece.EMPTY
     }
 }

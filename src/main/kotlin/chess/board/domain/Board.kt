@@ -82,8 +82,11 @@ class Board {
 
     fun move(sourcePosition: Position, targetPosition: Position) {
         val piece = findPieceIt(sourcePosition)
-        _points.deleteIt(sourcePosition.column, sourcePosition.raw)
+        if (piece.type == Piece.Type.EMPTY) {
+            throw RuntimeException("비어있는 칸은 움직일수 없습니다.")
+        }
         _points.addIt(targetPosition.column, targetPosition.raw, piece)
+        _points.deleteIt(sourcePosition.column, sourcePosition.raw)
     }
 
     fun findPieceIt(position: Position): Piece {

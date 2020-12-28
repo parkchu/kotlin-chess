@@ -20,7 +20,9 @@ fun getResult(board: Board): Boolean {
 
         checkValue(values) -> movePiece(board, values)
 
-        else -> false
+        value == "end" -> false
+
+        else -> printGuide()
     }
 }
 
@@ -30,11 +32,16 @@ fun startGame(board: Board): Boolean {
 }
 
 fun movePiece(board: Board, values: List<String>): Boolean {
-    val sourcePosition = Board.toPosition(values[1])
-    val targetPosition = Board.toPosition(values.last())
-    board.move(sourcePosition, targetPosition)
-    ChessView.print(board.getPiecesList())
+    try {
+        val sourcePosition = Board.toPosition(values[1])
+        val targetPosition = Board.toPosition(values.last())
+        board.move(sourcePosition, targetPosition)
+        ChessView.print(board.getPiecesList())
+    } catch (e: Exception) {
+        println(e.message ?: "위치를 잘 입력해주세요")
+    }
     return true
+
 }
 
 fun checkValue(values: List<String>): Boolean {
@@ -48,4 +55,9 @@ fun checkPosition(stringPosition: String): Boolean {
     } catch (e: Exception) {
         false
     }
+}
+
+fun printGuide(): Boolean {
+    println("start, move .. .., end 중에 입력해주세요")
+    return true
 }
