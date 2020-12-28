@@ -1,6 +1,5 @@
 package chess.board.domain
 
-import chess.line.domain.Line
 import chess.piece.domain.Piece
 import chess.piece.domain.Pieces
 import chess.point.domain.Points
@@ -16,10 +15,7 @@ class Board {
     }
 
     private fun setPawnAllRaw(raw: Int, piece: Piece) {
-        repeat(COLUMN_LENGTH) {
-            _points.addIt(it + 1, raw, piece)
-            _pieces.addPieceOfTeam(piece)
-        }
+        repeat(COLUMN_LENGTH) { addIt(it + 1, raw, piece) }
     }
 
     private fun setPieces() {
@@ -64,29 +60,11 @@ class Board {
         _pieces.addPieceOfTeam(piece)
     }
 
-    fun print(): String {
-        val line = Line()
-        val piecesList = _points.mapToList()
-        piecesList.forEach {
-            pieceToString(it, line)
-        }
-        return line.string
-    }
-
-    private fun pieceToString(rawPieces: List<Piece>, line: Line) {
-        val string = rawPieces.joinToString(separator = "", transform = { piece -> piece.print() })
-        line.add(string)
-    }
-
     fun addIt(position: Position, piece: Piece) {
         checkColumn(position.column)
         _points.addIt(position.column, position.raw, piece)
         _pieces.addPieceOfTeam(piece)
-    }
-
-    fun findPieceIt(position: Position): Piece {
-        return _points.findIt(position.column, position.raw)
-    }
+    } // test 코드에서만 사용되고 있는 메소드입니다. 특정 위치에 Piece 를 add 시키는 일이 수행해야 하는 것인지 생각해봅니다.
 
     private fun checkColumn(column: Int) {
         if (column !in COLUMN_RANGE) {
@@ -106,6 +84,14 @@ class Board {
         val piece = findPieceIt(sourcePosition)
         _points.deleteIt(sourcePosition.column, sourcePosition.raw)
         _points.addIt(targetPosition.column, targetPosition.raw, piece)
+    }
+
+    fun findPieceIt(position: Position): Piece {
+        return _points.findIt(position.column, position.raw)
+    }
+
+    fun getPiecesList(): List<List<Piece>> {
+        return _points.mapToList()
     }
 
     companion object {

@@ -1,6 +1,6 @@
 package chess.piece.domain
 
-class Piece(val team: Team, val type: Type) {
+abstract class Piece(val team: Team) {
     enum class Team(val value: String) {
         WHITE("white"),
         BLACK("black"),
@@ -17,8 +17,11 @@ class Piece(val team: Team, val type: Type) {
         EMPTY(0, ".")
     }
 
+    open val score: Int = 0
+
+    open val name: String = "."
+
     fun print(): String {
-        val name = type.string
         return if (team == Team.WHITE) {
             name
         } else {
@@ -31,18 +34,18 @@ class Piece(val team: Team, val type: Type) {
     fun isBlack(): Boolean = team == Team.BLACK
 
     companion object {
-        val BLACK_PAWN = Piece(Team.BLACK, Type.PAWN)
-        val BLACK_BISHOP = Piece(Team.BLACK, Type.BISHOP)
-        val BLACK_ROOK = Piece(Team.BLACK, Type.ROOK)
-        val BLACK_KNIGHT = Piece(Team.BLACK, Type.KNIGHT)
-        val BLACK_QUEEN = Piece(Team.BLACK, Type.QUEEN)
-        val BLACK_KING = Piece(Team.BLACK, Type.KING)
-        val WHITE_PAWN = Piece(Team.WHITE, Type.PAWN)
-        val WHITE_BISHOP = Piece(Team.WHITE, Type.BISHOP)
-        val WHITE_ROOK = Piece(Team.WHITE, Type.ROOK)
-        val WHITE_KNIGHT = Piece(Team.WHITE, Type.KNIGHT)
-        val WHITE_QUEEN = Piece(Team.WHITE, Type.QUEEN)
-        val WHITE_KING = Piece(Team.WHITE, Type.KING)
-        val EMPTY = Piece(Team.EMPTY, Type.EMPTY)
+        val BLACK_PAWN = Pawn(Team.BLACK)
+        val BLACK_BISHOP = Bishop(Team.BLACK)
+        val BLACK_ROOK = Rook(Team.BLACK)
+        val BLACK_KNIGHT = Knight(Team.BLACK)
+        val BLACK_QUEEN = Queen(Team.BLACK)
+        val BLACK_KING = King(Team.BLACK)
+        val WHITE_PAWN = Pawn(Team.WHITE)
+        val WHITE_BISHOP = Bishop(Team.WHITE)
+        val WHITE_ROOK = Rook(Team.WHITE)
+        val WHITE_KNIGHT = Knight(Team.WHITE)
+        val WHITE_QUEEN = Queen(Team.WHITE)
+        val WHITE_KING = King(Team.WHITE)
+        val EMPTY = Empty(Team.EMPTY)
     }
 }

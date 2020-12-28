@@ -2,16 +2,17 @@ package chess
 
 import chess.board.domain.Board
 import chess.board.domain.Position
+import chess.board.view.ChessView
 
 fun main() {
     val board = Board()
     board.init()
     do {
-        val result = test(board)
+        val result = getResult(board)
     } while (result)
 }
 
-fun test(board: Board): Boolean {
+fun getResult(board: Board): Boolean {
     val value = readLine()!!
     val values = value.split(" ")
     return when {
@@ -24,7 +25,7 @@ fun test(board: Board): Boolean {
 }
 
 fun startGame(board: Board): Boolean {
-    println(board.print())
+    ChessView.print(board.getPiecesList())
     return true
 }
 
@@ -32,7 +33,7 @@ fun movePiece(board: Board, values: List<String>): Boolean {
     val sourcePosition = Board.toPosition(values[1])
     val targetPosition = Board.toPosition(values.last())
     board.move(sourcePosition, targetPosition)
-    println(board.print())
+    ChessView.print(board.getPiecesList())
     return true
 }
 

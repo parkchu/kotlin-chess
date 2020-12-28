@@ -1,5 +1,6 @@
 package chess.board.domain
 
+import chess.board.view.ChessView
 import chess.piece.domain.Piece
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -14,7 +15,7 @@ class BoardTest {
 
         board.init()
 
-        val result = board.print()
+        val result = ChessView.print(board.getPiecesList())
         val compareTarget = "RNBQKBNR\nPPPPPPPP\n$MIDDLE_BLANK\npppppppp\nrnbqkbnr"
         assertThat(result).isEqualTo(compareTarget)
     }
@@ -26,7 +27,7 @@ class BoardTest {
 
         val piece = board.findPieceIt(A1)
 
-        assertThat(piece.type).isEqualTo(Piece.Type.ROOK)
+        assertThat(piece.score).isEqualTo(5)
         assertThat(piece.print()).isEqualTo("R")
     }
 
