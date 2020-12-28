@@ -25,6 +25,7 @@ class Points(column: Int, raw: Int) {
 
     fun addIt(column: Int, raw: Int, piece: Piece) {
         val rawPieces = getRawPieces(raw)
+        rawPieces[column] ?: throw IllegalArgumentException()
         rawPieces[column] = piece
     }
 
@@ -37,13 +38,9 @@ class Points(column: Int, raw: Int) {
         return rawPieces[column] ?: throw IllegalArgumentException()
     }
 
-    fun updateIt(column: Int, raw: Int, piece: Piece) {
-        val rawPieces = getRawPieces(raw)
-        rawPieces[column] = piece
-    }
-
     fun deleteIt(column: Int, raw: Int) {
         val rawPieces = getRawPieces(raw)
+        rawPieces[column] ?: throw IllegalArgumentException()
         rawPieces[column] = Piece.EMPTY
     }
 }

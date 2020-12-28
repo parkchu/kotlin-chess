@@ -52,12 +52,16 @@ class Board {
     }
 
     private fun addPieces(column: Int, raw: Int, piece: Piece) {
+        addIt(column, raw, piece)
+        if (column < 4) {
+            addIt(9 - column, raw, piece)
+        }
+    }
+
+    private fun addIt(column: Int, raw: Int, piece: Piece) {
+        checkColumn(column)
         _points.addIt(column, raw, piece)
         _pieces.addPieceOfTeam(piece)
-        if (column < 4) {
-            _points.addIt(9 - column, raw, piece)
-            _pieces.addPieceOfTeam(piece)
-        }
     }
 
     fun print(): String {
@@ -74,14 +78,14 @@ class Board {
         line.add(string)
     }
 
-    fun findPieceIt(position: Position): Piece {
-        return _points.findIt(position.column, position.raw)
-    }
-
     fun addIt(position: Position, piece: Piece) {
         checkColumn(position.column)
         _points.addIt(position.column, position.raw, piece)
         _pieces.addPieceOfTeam(piece)
+    }
+
+    fun findPieceIt(position: Position): Piece {
+        return _points.findIt(position.column, position.raw)
     }
 
     private fun checkColumn(column: Int) {
