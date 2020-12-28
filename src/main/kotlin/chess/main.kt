@@ -7,25 +7,33 @@ fun main() {
     val board = Board()
     board.init()
     do {
-        val value = readLine()!!
-        val values = value.split(" ")
-        val result = when {
-            value == "start" -> {
-                println(board.print())
-                true
-            }
-            checkValue(values) -> {
-                val sourcePosition = Board.toPosition(values[1])
-                val targetPosition = Board.toPosition(values.last())
-                board.move(sourcePosition, targetPosition)
-                println(board.print())
-                true
-            }
-            else -> {
-                false
-            }
-        }
+        val result = test(board)
     } while (result)
+}
+
+fun test(board: Board): Boolean {
+    val value = readLine()!!
+    val values = value.split(" ")
+    return when {
+        value == "start" -> startGame(board)
+
+        checkValue(values) -> movePiece(board, values)
+
+        else -> false
+    }
+}
+
+fun startGame(board: Board): Boolean {
+    println(board.print())
+    return true
+}
+
+fun movePiece(board: Board, values: List<String>): Boolean {
+    val sourcePosition = Board.toPosition(values[1])
+    val targetPosition = Board.toPosition(values.last())
+    board.move(sourcePosition, targetPosition)
+    println(board.print())
+    return true
 }
 
 fun checkValue(values: List<String>): Boolean {
@@ -34,7 +42,7 @@ fun checkValue(values: List<String>): Boolean {
 
 fun checkPosition(stringPosition: String): Boolean {
     return try {
-        val position = Position(stringPosition)
+        Position(stringPosition)
         true
     } catch (e: Exception) {
         false
