@@ -81,11 +81,26 @@ class BoardTest {
         assertThat(whiteScore).isEqualTo(58)
     }
 
+    @Test
+    fun movePiece() {
+        val board = Board()
+        board.init()
+
+        val sourcePosition = A7
+        val targetPosition = A6
+        board.move(sourcePosition, targetPosition)
+
+        assertThat(board.findPieceIt(sourcePosition)).isEqualTo(Piece.EMPTY)
+        assertThat(board.findPieceIt(targetPosition)).isEqualTo(Piece.WHITE_PAWN)
+    }
+
     companion object {
         const val MIDDLE_BLANK = "........\n........\n........\n........"
         val A1 = Position("a1")
         val Q1 = Position("q1")
         val A0 = Position("a0")
         val A4 = Position("a4")
+        val A6 = Position("a6")
+        val A7 = Position("a7")
     }
 }

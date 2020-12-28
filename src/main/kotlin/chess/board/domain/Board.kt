@@ -98,6 +98,10 @@ class Board {
         return _pieces.getScore(team)
     }
 
+    fun move(sourcePosition: Position, targetPosition: Position) {
+
+    }
+
     companion object {
         const val BLACK_FRONT_LINE = 2
         const val BLACK_BACK_LINE = 1
