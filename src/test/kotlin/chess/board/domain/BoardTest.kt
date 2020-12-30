@@ -155,6 +155,17 @@ class BoardTest {
         }.hasMessage("해당 말은 움직일 수 없는 위치 입니다.")
     }
 
+    @DisplayName("해당 플레이어의 차례가 아닙니다.")
+    @Test
+    fun moveEnemyPiece() {
+        val board = Board()
+        board.init()
+
+        assertThatThrownBy {
+            board.move(E8, A1, Piece.Team.BLACK)
+        }.hasMessage("white 의 차례가 아닙니다.")
+    }
+
     companion object {
         const val MIDDLE_BLANK = "........\n........\n........\n........"
         val A1 = Position("a1")

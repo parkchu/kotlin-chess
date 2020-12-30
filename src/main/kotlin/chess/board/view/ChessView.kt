@@ -18,4 +18,16 @@ object ChessView {
         val string = rawPieces.joinToString(separator = "", transform = { piece -> piece.print() })
         line.add(string)
     }
+
+    fun printError(isPlaying: () -> Boolean): Boolean {
+        return try {
+            isPlaying()
+        } catch (e: NoSuchElementException) {
+            println("show, move .. .., restart, end 중에 입력해주세요")
+            true
+        } catch (e: Exception) {
+            println(e.message ?: "위치를 잘 입력해주세요")
+            true
+        }
+    }
 }

@@ -80,11 +80,12 @@ class Board {
         return _pieces.getScore(team)
     }
 
-    fun move(sourcePosition: Position, targetPosition: Position) {
+    fun move(sourcePosition: Position, targetPosition: Position, team: Piece.Team = Piece.Team.WHITE) {
         val sourcePiece = findPieceIt(sourcePosition)
         val targetPiece = findPieceIt(targetPosition)
         checkPosition(sourcePosition, targetPosition)
         checkPiece(sourcePiece, targetPiece)
+        checkTurn(team, sourcePiece.team)
         checkAbleMove(sourcePiece, sourcePosition, targetPosition)
     }
 
@@ -100,6 +101,12 @@ class Board {
         }
         if (sourcePiece.team == targetPiece.team) {
             throw RuntimeException("자기 팀이 있는 위치로는 움직일 수 없습니다.")
+        }
+    }
+
+    private fun checkTurn(currentTurn: Piece.Team, sourceTeam: Piece.Team) {
+        if (currentTurn != sourceTeam) {
+            throw RuntimeException("${sourceTeam.value} 의 차례가 아닙니다.")
         }
     }
 

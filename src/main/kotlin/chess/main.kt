@@ -1,70 +1,14 @@
 package chess
 
-import chess.board.domain.Board
 import chess.board.view.ChessView
+import chess.game.domain.ChessGame
 
 fun main() {
-    val board = Board()
-    board.init()
+    val chess = ChessGame()
+    chess.init()
     do {
-        val result = getResult(board)
+        val inputValue = readLine()!!
+        val result = ChessView.printError { chess.isPlaying(inputValue) }
+        ChessView.print(chess.getPiecesList())
     } while (result)
-}
-
-fun getResult(board: Board): Boolean {
-    val value = readLine()!!
-    val values = value.split(" ")
-    return when {
-        value == "start" -> startGame(board)
-
-        checkValue(values) -> movePiece(board, values)
-
-        value == "restart" -> restartGame(board)
-
-        value == "end" -> false
-
-        else -> printGuide()
-    }
-}
-
-fun startGame(board: Board): Boolean {
-    ChessView.print(board.getPiecesList())
-    return true
-}
-
-fun movePiece(board: Board, values: List<String>): Boolean {
-    try {
-        val sourcePosition = Board.toPosition(values[1])
-        val targetPosition = Board.toPosition(values.last())
-        board.move(sourcePosition, targetPosition)
-        ChessView.print(board.getPiecesList())
-    } catch (e: Exception) {
-        println(e.message ?: "위치를 잘 입력해주세요")
-    }
-    return true
-
-}
-
-fun checkValue(values: List<String>): Boolean {
-    return (values.first() == "move" && checkPosition(values[1]) && checkPosition(values.last()))
-}
-
-fun checkPosition(stringPosition: String): Boolean {
-    return try {
-        Board.toPosition(stringPosition)
-        true
-    } catch (e: Exception) {
-        false
-    }
-}
-
-fun restartGame(board: Board): Boolean {
-    board.init()
-    startGame(board)
-    return true
-}
-
-fun printGuide(): Boolean {
-    println("start, move .. .., end 중에 입력해주세요")
-    return true
 }
