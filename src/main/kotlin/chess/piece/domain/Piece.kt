@@ -1,5 +1,7 @@
 package chess.piece.domain
 
+import chess.board.domain.Position
+
 abstract class Piece(val team: Team) {
     enum class Team(val value: String) {
         WHITE("white"),
@@ -30,6 +32,8 @@ abstract class Piece(val team: Team) {
     fun isWhite(): Boolean = team == Team.WHITE
 
     fun isBlack(): Boolean = team == Team.BLACK
+
+    open fun ableMoveIt(sourcePosition: Position, targetPosition: Position): Boolean = false
 
     companion object {
         val BLACK_PAWN = Pawn(Team.BLACK)

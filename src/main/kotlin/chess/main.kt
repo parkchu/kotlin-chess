@@ -1,7 +1,6 @@
 package chess
 
 import chess.board.domain.Board
-import chess.board.domain.Position
 import chess.board.view.ChessView
 
 fun main() {
@@ -50,7 +49,7 @@ fun checkValue(values: List<String>): Boolean {
 
 fun checkPosition(stringPosition: String): Boolean {
     return try {
-        Position(stringPosition)
+        Board.toPosition(stringPosition)
         true
     } catch (e: Exception) {
         false
