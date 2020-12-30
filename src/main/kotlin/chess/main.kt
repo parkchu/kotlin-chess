@@ -19,6 +19,8 @@ fun getResult(board: Board): Boolean {
 
         checkValue(values) -> movePiece(board, values)
 
+        value == "restart" -> restartGame(board)
+
         value == "end" -> false
 
         else -> printGuide()
@@ -54,6 +56,12 @@ fun checkPosition(stringPosition: String): Boolean {
     } catch (e: Exception) {
         false
     }
+}
+
+fun restartGame(board: Board): Boolean {
+    board.init()
+    startGame(board)
+    return true
 }
 
 fun printGuide(): Boolean {
