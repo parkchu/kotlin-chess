@@ -1,6 +1,6 @@
 package chess.board.domain
 
-class Position(val column: Int, val raw: Int) {
+data class Position(val column: Int, val raw: Int) {
     constructor(position: String) : this(charToInt(position.first()), Character.getNumericValue(position.last()))
 
     companion object {

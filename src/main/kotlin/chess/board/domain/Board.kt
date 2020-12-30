@@ -110,6 +110,7 @@ class Board {
         const val QUEEN = 4
         const val KING = 5
         val COLUMN_RANGE = 1..8
+        val RAW_RANGE = 1..8
 
         fun toPosition(stringPosition: String): Position = Position(stringPosition)
     }
