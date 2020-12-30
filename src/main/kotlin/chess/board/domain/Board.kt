@@ -81,12 +81,35 @@ class Board {
     }
 
     fun move(sourcePosition: Position, targetPosition: Position) {
-        val piece = findPieceIt(sourcePosition)
-        if (piece.type == Piece.Type.EMPTY) {
+        val sourcePiece = findPieceIt(sourcePosition)
+        val targetPiece = findPieceIt(targetPosition)
+        checkPosition(sourcePosition, targetPosition)
+        checkPiece(sourcePiece, targetPiece)
+        checkAbleMove(sourcePiece, sourcePosition, targetPosition)
+    }
+
+    private fun checkPosition(sourcePosition: Position, targetPosition: Position) {
+        if (sourcePosition == targetPosition) {
+            throw RuntimeException("자기 위치로는 움직일 수 없습니다.")
+        }
+    }
+
+    private fun checkPiece(sourcePiece: Piece, targetPiece: Piece) {
+        if (sourcePiece.type == Piece.Type.EMPTY) {
             throw RuntimeException("비어있는 칸은 움직일수 없습니다.")
         }
-        _points.addIt(targetPosition.column, targetPosition.raw, piece)
-        _points.deleteIt(sourcePosition.column, sourcePosition.raw)
+        if (sourcePiece.team == targetPiece.team) {
+            throw RuntimeException("자기 팀이 있는 위치로는 움직일 수 없습니다.")
+        }
+    }
+
+    private fun checkAbleMove(sourcePiece: Piece, sourcePosition: Position, targetPosition: Position) {
+        if (sourcePiece.ableMoveIt(sourcePosition, targetPosition)) {
+            _points.addIt(targetPosition.column, targetPosition.raw, sourcePiece)
+            _points.deleteIt(sourcePosition.column, sourcePosition.raw)
+        } else {
+            throw RuntimeException("해당 말은 움직일 수 없는 위치 입니다.")
+        }
     }
 
     fun findPieceIt(position: Position): Piece {
