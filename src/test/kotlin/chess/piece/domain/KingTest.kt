@@ -18,14 +18,14 @@ class KingTest {
         val west = Position(1, 2)
         val northWest = Position(1, 1)
 
-        assertThat(king.ableMoveIt(sourcePosition, north)).isTrue
-        assertThat(king.ableMoveIt(sourcePosition, northEast)).isTrue
-        assertThat(king.ableMoveIt(sourcePosition, east)).isTrue
-        assertThat(king.ableMoveIt(sourcePosition, southEast)).isTrue
-        assertThat(king.ableMoveIt(sourcePosition, south)).isTrue
-        assertThat(king.ableMoveIt(sourcePosition, southWest)).isTrue
-        assertThat(king.ableMoveIt(sourcePosition, west)).isTrue
-        assertThat(king.ableMoveIt(sourcePosition, northWest)).isTrue
+        assertThat(king.getMovePositions(sourcePosition, north)).isNotEmpty
+        assertThat(king.getMovePositions(sourcePosition, northEast)).isNotEmpty
+        assertThat(king.getMovePositions(sourcePosition, east)).isNotEmpty
+        assertThat(king.getMovePositions(sourcePosition, southEast)).isNotEmpty
+        assertThat(king.getMovePositions(sourcePosition, south)).isNotEmpty
+        assertThat(king.getMovePositions(sourcePosition, southWest)).isNotEmpty
+        assertThat(king.getMovePositions(sourcePosition, west)).isNotEmpty
+        assertThat(king.getMovePositions(sourcePosition, northWest)).isNotEmpty
     }
 
     @Test
@@ -34,8 +34,8 @@ class KingTest {
         val sourcePosition = Position(1, 1)
         val targetPosition = Position(0, 1)
 
-        val boolean = king.ableMoveIt(sourcePosition, targetPosition)
+        val boolean = king.getMovePositions(sourcePosition, targetPosition)
 
-        assertThat(boolean).isFalse
+        assertThat(boolean).isEmpty()
     }
 }

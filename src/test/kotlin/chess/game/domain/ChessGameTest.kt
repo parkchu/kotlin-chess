@@ -16,8 +16,7 @@ class ChessGameTest {
 
         assertTrue(result)
     }
-
-    /* 아직 폰의 움직임을 구현하지 않아서 오류가 발생합니다. 폰의 움직임을 구현하고 주석을 풀겠습니다.
+    
     @Test
     fun movePiece() {
         val chessGame = ChessGame()
@@ -27,7 +26,7 @@ class ChessGameTest {
         val result = chessGame.isPlaying(inputValue)
 
         assertTrue(result)
-    } */
+    }
 
     @Test
     fun restartGame() {

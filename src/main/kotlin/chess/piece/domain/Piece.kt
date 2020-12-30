@@ -1,5 +1,7 @@
 package chess.piece.domain
 
+import chess.board.domain.Board.Companion.COLUMN_RANGE
+import chess.board.domain.Board.Companion.RAW_RANGE
 import chess.board.domain.Position
 
 abstract class Piece(val team: Team) {
@@ -33,7 +35,13 @@ abstract class Piece(val team: Team) {
 
     fun isBlack(): Boolean = team == Team.BLACK
 
-    open fun ableMoveIt(sourcePosition: Position, targetPosition: Position): Boolean = false
+    open fun getMovePositions(sourcePosition: Position, targetPosition: Position): List<Position> {
+        val directions = getDirections()
+        val positions = directions.map { Position(sourcePosition.column + it.column, sourcePosition.raw + it.raw) }
+        return positions.filter { it == targetPosition && it.column in COLUMN_RANGE && it.raw in RAW_RANGE }
+    }
+
+    open fun getDirections(): List<Direction> = listOf()
 
     companion object {
         val BLACK_PAWN = Pawn(Team.BLACK)

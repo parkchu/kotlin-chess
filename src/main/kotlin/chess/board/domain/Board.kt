@@ -1,5 +1,6 @@
 package chess.board.domain
 
+import chess.piece.domain.Direction
 import chess.piece.domain.Piece
 import chess.piece.domain.Pieces
 import chess.point.domain.Points
@@ -86,7 +87,7 @@ class Board {
         checkPosition(sourcePosition, targetPosition)
         checkPiece(sourcePiece, targetPiece)
         checkTurn(team, sourcePiece.team)
-        checkAbleMove(sourcePiece, sourcePosition, targetPosition)
+        checkAbleMove(sourcePosition, targetPosition)
     }
 
     private fun checkPosition(sourcePosition: Position, targetPosition: Position) {
@@ -110,12 +111,46 @@ class Board {
         }
     }
 
-    private fun checkAbleMove(sourcePiece: Piece, sourcePosition: Position, targetPosition: Position) {
-        if (sourcePiece.ableMoveIt(sourcePosition, targetPosition)) {
-            _points.addIt(targetPosition.column, targetPosition.raw, sourcePiece)
-            _points.deleteIt(sourcePosition.column, sourcePosition.raw)
+    private fun checkAbleMove(sourcePosition: Position, targetPosition: Position) {
+        val sourcePiece = findPieceIt(sourcePosition)
+        val positions = sourcePiece.getMovePositions(sourcePosition, targetPosition)
+        if (positions.isNotEmpty() && checkContainsPiece(positions)) {
+            if (sourcePiece.type == Piece.Type.PAWN) {
+                if (checkPawnMove(sourcePosition, targetPosition)) {
+                    _points.addIt(targetPosition.column, targetPosition.raw, sourcePiece)
+                    _points.deleteIt(sourcePosition.column, sourcePosition.raw)
+                } else {
+                    throw RuntimeException("해당 말은 움직일 수 없는 위치 입니다.")
+                }
+            } else {
+                _points.addIt(targetPosition.column, targetPosition.raw, sourcePiece)
+                _points.deleteIt(sourcePosition.column, sourcePosition.raw)
+            }
         } else {
             throw RuntimeException("해당 말은 움직일 수 없는 위치 입니다.")
+        }
+    }
+
+    private fun checkContainsPiece(positions: List<Position>): Boolean {
+        return positions.dropLast(1).map { findPieceIt(it) }.all { it.type == Piece.Type.EMPTY }
+    }
+
+    private fun checkPawnMove(sourcePosition: Position, targetPosition: Position): Boolean {
+        val sourcePiece = findPieceIt(sourcePosition)
+        val targetPiece = findPieceIt(targetPosition)
+        val position = targetPosition.minusIt(sourcePosition)
+        return if (sourcePiece.isWhite()) {
+            if (position == Direction.NORTH.toPosition() || (Direction.SOUTH.plusIt(position) == Direction.NORTH.toPosition() && sourcePosition.raw == 7)) {
+                targetPiece.type == Piece.Type.EMPTY
+            } else {
+                targetPiece.team == Piece.Team.BLACK
+            }
+        } else {
+            if (position == Direction.SOUTH.toPosition() || (Direction.NORTH.plusIt(position) == Direction.SOUTH.toPosition() && sourcePosition.raw == 2)) {
+                targetPiece.type == Piece.Type.EMPTY
+            } else {
+                targetPiece.team == Piece.Team.WHITE
+            }
         }
     }
 

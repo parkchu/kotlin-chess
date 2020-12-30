@@ -2,6 +2,7 @@ package chess.board.domain
 
 import chess.board.view.ChessView
 import chess.piece.domain.Piece
+import chess.piece.domain.Piece.Companion.WHITE_PAWN
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -82,7 +83,7 @@ class BoardTest {
         assertThat(whiteScore).isEqualTo(58)
     }
 
-    /* 아직 폰의 움직임을 구현하지 않아서 테스트가 실패합니다. 폰의 움직임을 구현하고 주석을 풀겠습니다.
+
     @Test
     fun movePiece() {
         val board = Board()
@@ -95,7 +96,7 @@ class BoardTest {
         assertThat(board.findPieceIt(sourcePosition)).isEqualTo(Piece.EMPTY)
         assertThat(board.findPieceIt(targetPosition)).isEqualTo(Piece.WHITE_PAWN)
     }
-    */
+
 
     @DisplayName("말이 없는 위치를 움직일려고 할 경우의 예외처리")
     @Test
@@ -166,15 +167,75 @@ class BoardTest {
         }.hasMessage("white 의 차례가 아닙니다.")
     }
 
+    @DisplayName("앞에 말이 있을 경우 폰을 움직이는 상황")
+    @Test
+    fun movePawn() {
+        val board = Board()
+        board.init()
+        board.addIt(A6, Piece.BLACK_BISHOP)
+
+        assertThatThrownBy {
+            board.move(A7, A6, Piece.Team.WHITE)
+        }.hasMessage("해당 말은 움직일 수 없는 위치 입니다.")
+    }
+
+    @DisplayName("대각선에 상대말이 있을 경우 폰을 움직이는 상황")
+    @Test
+    fun movePawn2() {
+        val board = Board()
+        board.init()
+        board.addIt(B6, Piece.BLACK_BISHOP)
+
+        board.move(A7, B6, Piece.Team.WHITE)
+
+        assertThat(board.findPieceIt(B6)).isEqualTo(Piece.WHITE_PAWN)
+    }
+
+    @DisplayName("대각선에 말이 없을 경우 폰을 움직이는 상황")
+    @Test
+    fun movePawn3() {
+        val board = Board()
+        board.init()
+
+        assertThatThrownBy {
+            board.move(A7, B6, Piece.Team.WHITE)
+        }.hasMessage("해당 말은 움직일 수 없는 위치 입니다.")
+    }
+
+    @DisplayName("한번도 움직이지 않은 폰은 앞으로 2칸 이동할 수 있습니다.")
+    @Test
+    fun movePawn4() {
+        val board = Board()
+        board.init()
+
+        board.move(A7, A5)
+
+        assertThat(board.findPieceIt(A5)).isEqualTo(WHITE_PAWN)
+    }
+
+    @DisplayName("한번 움직인 폰은 앞으로 2칸 이동할 수 없습니다.")
+    @Test
+    fun movePawn5() {
+        val board = Board()
+        board.init()
+        board.move(A7, A6)
+
+        assertThatThrownBy {
+            board.move(A6, A4)
+        }.hasMessage("해당 말은 움직일 수 없는 위치 입니다.")
+    }
+
     companion object {
         const val MIDDLE_BLANK = "........\n........\n........\n........"
         val A1 = Position("a1")
         val Q1 = Position("q1")
         val A0 = Position("a0")
         val A4 = Position("a4")
+        val A5 = Position("a5")
         val A6 = Position("a6")
         val A7 = Position("a7")
         val E8 = Position("e8")
         val E7 = Position("e7")
+        val B6 = Position("b6")
     }
 }
