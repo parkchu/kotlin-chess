@@ -13,13 +13,24 @@ class PawnTest {
     }
 
     @Test
-    fun getMovableCoordinates() {
+    fun isMovableCoordinates() {
         val pawn = Pawn(Team.WHITE)
-        val coordinate = Coordinate("e2")
-        val movableCoordinates = listOf(Coordinate("e3"), Coordinate("e4"), Coordinate("f3"), Coordinate("d3"))
+        val currentCoordinate = Coordinate("e2")
+        val targetCoordinate = Coordinate("e4")
 
-        val result = pawn.getMovableCoordinates(coordinate)
+        val result = pawn.isMovable(currentCoordinate, targetCoordinate)
 
-        assertThat(result).isEqualTo(movableCoordinates)
+        assertThat(result).isTrue
+    }
+
+    @Test
+    fun isNotMovableCoordinates() {
+        val pawn = Pawn(Team.WHITE)
+        val currentCoordinate = Coordinate("e2")
+        val targetCoordinate = Coordinate("e1")
+
+        val result = pawn.isMovable(currentCoordinate, targetCoordinate)
+
+        assertThat(result).isFalse
     }
 }

@@ -16,6 +16,13 @@ data class Coordinate(
             null
         }
     }
+
+    fun getDistance(targetCoordinate: Coordinate): Distance {
+        val fileDistance = targetCoordinate.file.value - file.value
+        val rankDistance = targetCoordinate.rank.value - rank.value
+
+        return Distance(fileDistance, rankDistance)
+    }
 }
 
 enum class File(val value: Char) {
