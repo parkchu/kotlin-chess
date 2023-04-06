@@ -33,4 +33,15 @@ class PawnTest {
 
         assertThat(result).isFalse
     }
+
+    @Test
+    fun doNotMove() {
+        val pawn = Pawn(Team.WHITE)
+        val currentCoordinate = Coordinate("e2")
+        val targetCoordinate = Coordinate("e2")
+
+        val result = pawn.isMovable(currentCoordinate, targetCoordinate)
+
+        assertThat(result).isFalse
+    }
 }
