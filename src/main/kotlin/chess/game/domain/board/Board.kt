@@ -39,9 +39,8 @@ class Board(
     private fun isImmovable(currentCoordinate: Coordinate, targetCoordinate: Coordinate): Boolean {
         val piece = findNotNull(currentCoordinate)
         val distance = currentCoordinate.getDistance(targetCoordinate)
-        val nextCoordinate = currentCoordinate.move(distance.getFileDirection(), distance.getRankDirection())
 
-        if (piece.isKnight() || isWithoutObstacle(nextCoordinate, targetCoordinate)) {
+        if (piece.isKnight() || isWithoutObstacle(currentCoordinate, targetCoordinate)) {
             return !(piece.isMovable(distance) && isMovable(targetCoordinate, piece.team))
         }
         return true
@@ -49,13 +48,12 @@ class Board(
 
     private fun isWithoutObstacle(currentCoordinate: Coordinate, targetCoordinate: Coordinate): Boolean {
         val distance = currentCoordinate.getDistance(targetCoordinate)
-        if (distance.isImmovable()) {
+        val nextCoordinate = currentCoordinate.move(distance.getFileDirection(), distance.getRankDirection())
+
+        if (nextCoordinate.getDistance(targetCoordinate).isImmovable()) {
             return true
         }
-        find(currentCoordinate) ?: return isWithoutObstacle(
-            currentCoordinate.move(distance.getFileDirection(), distance.getRankDirection()),
-            targetCoordinate
-        )
+        find(nextCoordinate) ?: return isWithoutObstacle(nextCoordinate, targetCoordinate)
         return false
     }
 
