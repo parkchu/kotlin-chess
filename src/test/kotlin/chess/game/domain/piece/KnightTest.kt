@@ -1,6 +1,8 @@
-package chess.piece.domain
+package chess.game.domain.piece
 
-import chess.board.domain.Coordinate
+import chess.game.domain.board.Coordinate
+import chess.game.domain.piece.Knight
+import chess.game.domain.piece.Team
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -11,7 +13,7 @@ class KnightTest {
         val currentCoordinate = Coordinate("b1")
         val targetCoordinate = Coordinate("a3")
 
-        val result = knight.isMovable(currentCoordinate, targetCoordinate)
+        val result = knight.isMovable(currentCoordinate.getDistance(targetCoordinate))
 
         Assertions.assertThat(result).isTrue
     }
@@ -22,7 +24,7 @@ class KnightTest {
         val currentCoordinate = Coordinate("b1")
         val targetCoordinate = Coordinate("d3")
 
-        val result = knight.isMovable(currentCoordinate, targetCoordinate)
+        val result = knight.isMovable(currentCoordinate.getDistance(targetCoordinate))
 
         Assertions.assertThat(result).isFalse
     }

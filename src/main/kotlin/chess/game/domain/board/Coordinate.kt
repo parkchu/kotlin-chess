@@ -1,4 +1,4 @@
-package chess.board.domain
+package chess.game.domain.board
 
 data class Coordinate(
     val file: File,
@@ -9,19 +9,15 @@ data class Coordinate(
         Rank.get(coordinate.last())
     )
 
-    fun move(right: Int, up: Int): Coordinate? {
-        return try {
-            Coordinate(File.get(file.value + right), Rank.get(rank.value + up))
-        } catch (e: NoSuchElementException) {
-            null
-        }
-    }
-
     fun getDistance(targetCoordinate: Coordinate): Distance {
         val fileDistance = targetCoordinate.file.value - file.value
         val rankDistance = targetCoordinate.rank.value - rank.value
 
         return Distance(fileDistance, rankDistance)
+    }
+
+    fun move(right: Int, up: Int): Coordinate {
+        return Coordinate(File.get(file.value + right), Rank.get(rank.value + up))
     }
 }
 

@@ -1,12 +1,12 @@
-package chess.piece.domain
+package chess.game.domain.piece
 
-import chess.board.domain.Distance
+import chess.game.domain.board.Distance
 import kotlin.math.abs
 
 class Bishop(
     team: Team
 ) : Piece(team) {
-    override fun isMovable(distance: Distance): Boolean {
+    override fun isMovableDetail(distance: Distance): Boolean {
         return abs(distance.fileDistance) - abs(distance.rankDistance) == 0
     }
 }

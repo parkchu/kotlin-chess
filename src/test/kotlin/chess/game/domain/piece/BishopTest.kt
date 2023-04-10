@@ -1,6 +1,8 @@
-package chess.piece.domain
+package chess.game.domain.piece
 
-import chess.board.domain.Coordinate
+import chess.game.domain.board.Coordinate
+import chess.game.domain.piece.Bishop
+import chess.game.domain.piece.Team
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -11,7 +13,7 @@ class BishopTest {
         val currentCoordinate = Coordinate("c1")
         val targetCoordinate = Coordinate("f4")
 
-        val result = bishop.isMovable(currentCoordinate, targetCoordinate)
+        val result = bishop.isMovable(currentCoordinate.getDistance(targetCoordinate))
 
         assertThat(result).isTrue
     }
@@ -22,7 +24,7 @@ class BishopTest {
         val currentCoordinate = Coordinate("e2")
         val targetCoordinate = Coordinate("a2")
 
-        val result = pawn.isMovable(currentCoordinate, targetCoordinate)
+        val result = pawn.isMovable(currentCoordinate.getDistance(targetCoordinate))
 
         assertThat(result).isFalse
     }

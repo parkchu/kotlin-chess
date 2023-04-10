@@ -1,6 +1,8 @@
-package chess.piece.domain
+package chess.game.domain.piece
 
-import chess.board.domain.Coordinate
+import chess.game.domain.board.Coordinate
+import chess.game.domain.piece.Queen
+import chess.game.domain.piece.Team
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -11,7 +13,7 @@ class QueenTest {
         val currentCoordinate = Coordinate("d1")
         val targetCoordinate = Coordinate("a1")
 
-        val result = queen.isMovable(currentCoordinate, targetCoordinate)
+        val result = queen.isMovable(currentCoordinate.getDistance(targetCoordinate))
 
         assertThat(result).isTrue
     }
@@ -22,7 +24,7 @@ class QueenTest {
         val currentCoordinate = Coordinate("d1")
         val targetCoordinate = Coordinate("c3")
 
-        val result = queen.isMovable(currentCoordinate, targetCoordinate)
+        val result = queen.isMovable(currentCoordinate.getDistance(targetCoordinate))
 
         assertThat(result).isFalse
     }

@@ -1,6 +1,8 @@
-package chess.piece.domain
+package chess.game.domain.piece
 
-import chess.board.domain.Coordinate
+import chess.game.domain.board.Coordinate
+import chess.game.domain.piece.Rook
+import chess.game.domain.piece.Team
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -11,7 +13,7 @@ class RookTest {
         val currentCoordinate = Coordinate("a1")
         val targetCoordinate = Coordinate("a5")
 
-        val result = rook.isMovable(currentCoordinate, targetCoordinate)
+        val result = rook.isMovable(currentCoordinate.getDistance(targetCoordinate))
 
         assertThat(result).isTrue
     }
@@ -22,7 +24,7 @@ class RookTest {
         val currentCoordinate = Coordinate("c1")
         val targetCoordinate = Coordinate("f4")
 
-        val result = rook.isMovable(currentCoordinate, targetCoordinate)
+        val result = rook.isMovable(currentCoordinate.getDistance(targetCoordinate))
 
         assertThat(result).isFalse
     }

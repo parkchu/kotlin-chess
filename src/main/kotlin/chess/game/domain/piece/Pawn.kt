@@ -1,11 +1,11 @@
-package chess.piece.domain
+package chess.game.domain.piece
 
-import chess.board.domain.Distance
+import chess.game.domain.board.Distance
 
 class Pawn(
     team: Team
 ) : Piece(team) {
-    override fun isMovable(distance: Distance): Boolean {
+    override fun isMovableDetail(distance: Distance): Boolean {
         if (distance.rankDistance == team.forwardDirection) {
             return distance.rankDistance in -1..1
         }
