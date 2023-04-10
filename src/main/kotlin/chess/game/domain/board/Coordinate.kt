@@ -56,7 +56,7 @@ enum class Rank(val value: Char) {
 
     companion object {
         fun get(value: Char) =
-            values().find { it.value == value} ?: throw NoSuchElementException("해당 랭크는 존재하지 않습니다. ($value)")
+            values().find { it.value == value } ?: throw NoSuchElementException("해당 랭크는 존재하지 않습니다. ($value)")
 
         fun containsPawnRanks(rank: Rank) = listOf(TWO, SEVEN).contains(rank)
     }

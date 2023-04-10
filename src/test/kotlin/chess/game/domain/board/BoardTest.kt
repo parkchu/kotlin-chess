@@ -76,7 +76,6 @@ class BoardTest {
             board.move(currentCoordinate, targetCoordinate)
         }.isInstanceOf(IllegalArgumentException::class.java).hasMessage("해당 좌표로 움직일 수 없습니다. ($targetCoordinate)")
 
-
         val sourcePoint = board.findNotNull(currentCoordinate)
         val targetPoint = board.findNotNull(targetCoordinate)
         assertThat(sourcePoint.isWhite()).isTrue
@@ -97,7 +96,6 @@ class BoardTest {
         assertThatThrownBy {
             board.move(currentCoordinate, targetCoordinate)
         }.isInstanceOf(IllegalArgumentException::class.java).hasMessage("해당 좌표로 움직일 수 없습니다. ($targetCoordinate)")
-
 
         val sourcePoint = board.findNotNull(currentCoordinate)
         val targetPoint = board.find(targetCoordinate)

@@ -1,8 +1,6 @@
 package chess.game.domain.piece
 
 import chess.game.domain.board.Coordinate
-import chess.game.domain.piece.Queen
-import chess.game.domain.piece.Team
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

@@ -18,7 +18,7 @@ abstract class Piece(
 
     fun isBlack() = team.isBlack()
 
-    fun isEnemy(team: Team) = this.team != team
+    fun isEnemy(team: Team) = this.team.isEnemy(team)
 
     open fun isKnight(): Boolean = false
 }
@@ -30,4 +30,6 @@ enum class Team(val forwardDirection: Int) {
     fun isWhite() = this == WHITE
 
     fun isBlack() = this == BLACK
+
+    fun isEnemy(team: Team) = this != team
 }
