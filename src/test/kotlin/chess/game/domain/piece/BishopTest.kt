@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 class BishopTest {
     @Test
-    fun isMovableCoordinates() {
+    fun `움직일 수 있는 거리임`() {
         val bishop = Bishop(Team.WHITE)
         val currentCoordinate = Coordinate("c1")
         val targetCoordinate = Coordinate("f4")
@@ -17,7 +17,7 @@ class BishopTest {
     }
 
     @Test
-    fun isNotMovableCoordinates() {
+    fun `움직일 수 없는 거리임`() {
         val pawn = Bishop(Team.WHITE)
         val currentCoordinate = Coordinate("e2")
         val targetCoordinate = Coordinate("a2")

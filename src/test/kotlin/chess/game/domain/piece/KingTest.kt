@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 class KingTest {
     @Test
-    fun isMovableCoordinates() {
+    fun `움직일 수 있는 거리임`() {
         val king = King(Team.WHITE)
         val currentCoordinate = Coordinate("e1")
         val targetCoordinate = Coordinate("d2")
@@ -17,7 +17,7 @@ class KingTest {
     }
 
     @Test
-    fun isNotMovableCoordinates() {
+    fun `움직일 수 없는 거리임`() {
         val king = King(Team.WHITE)
         val currentCoordinate = Coordinate("d1")
         val targetCoordinate = Coordinate("c3")

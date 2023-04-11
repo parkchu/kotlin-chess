@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 class RookTest {
     @Test
-    fun isMovableCoordinates() {
+    fun `움직일 수 있는 거리임`() {
         val rook = Rook(Team.WHITE)
         val currentCoordinate = Coordinate("a1")
         val targetCoordinate = Coordinate("a5")
@@ -17,7 +17,7 @@ class RookTest {
     }
 
     @Test
-    fun isNotMovableCoordinates() {
+    fun `움직일 수 없는 거리임`() {
         val rook = Rook(Team.WHITE)
         val currentCoordinate = Coordinate("c1")
         val targetCoordinate = Coordinate("f4")

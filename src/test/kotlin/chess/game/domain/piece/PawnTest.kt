@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Test
 
 class PawnTest {
     @Test
-    fun makePawn() {
+    fun `화이트 폰 생성함`() {
         val pawn = Pawn(Team.WHITE)
 
         assertThat(pawn.isWhite()).isTrue
     }
 
     @Test
-    fun isMovableCoordinates() {
+    fun `움직일 수 있는 거리임`() {
         val pawn = Pawn(Team.WHITE)
         val currentCoordinate = Coordinate("e2")
         val targetCoordinate = Coordinate("e4")
@@ -24,7 +24,7 @@ class PawnTest {
     }
 
     @Test
-    fun isNotMovableCoordinates() {
+    fun `움직일 수 없는 거리임`() {
         val pawn = Pawn(Team.WHITE)
         val currentCoordinate = Coordinate("e2")
         val targetCoordinate = Coordinate("e1")
@@ -35,7 +35,7 @@ class PawnTest {
     }
 
     @Test
-    fun doNotMove() {
+    fun `현재 좌표로 움직임`() {
         val pawn = Pawn(Team.WHITE)
         val currentCoordinate = Coordinate("e2")
         val targetCoordinate = Coordinate("e2")

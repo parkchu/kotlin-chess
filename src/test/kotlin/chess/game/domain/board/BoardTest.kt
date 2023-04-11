@@ -15,7 +15,7 @@ val EMPTY_BOARD: Map<File, Map<Rank, Piece?>> = File.values().associateWith { Ra
 
 class BoardTest {
     @Test
-    fun initBoard() {
+    fun `체스 기본룰에 맞게 기물들을 배치함`() {
         val board = Board()
 
         board.init()
@@ -30,7 +30,7 @@ class BoardTest {
     }
 
     @Test
-    fun movePiece() {
+    fun `기물이 움직일 수 있는 좌표임`() {
         val board = Board()
         board.init()
         val currentCoordinate = Coordinate("e2")
@@ -46,7 +46,7 @@ class BoardTest {
     }
 
     @Test
-    fun takePiece() {
+    fun `움직일 수 있는 좌표에 상대팀 기물이 있으면 잡을 수 있음`() {
         val points: Map<File, MutableMap<Rank, Piece?>> = EMPTY_BOARD.map { it.key to it.value.toMutableMap() }.toMap()
         points[File.A]!![Rank.ONE] = Rook(Team.WHITE)
         points[File.A]!![Rank.EIGHT] = Rook(Team.BLACK)
@@ -64,7 +64,7 @@ class BoardTest {
     }
 
     @Test
-    fun moveWithSameTeam() {
+    fun `움직이는 좌표에 같은팀 기물이 있으면 안됨`() {
         val points: Map<File, MutableMap<Rank, Piece?>> = EMPTY_BOARD.map { it.key to it.value.toMutableMap() }.toMap()
         points[File.A]!![Rank.ONE] = Rook(Team.WHITE)
         points[File.A]!![Rank.EIGHT] = Rook(Team.WHITE)
@@ -85,7 +85,7 @@ class BoardTest {
     }
 
     @Test
-    fun moveWithObstacle() {
+    fun `움직이는 경로에 기물이 있으면 안됨`() {
         val points: Map<File, MutableMap<Rank, Piece?>> = EMPTY_BOARD.map { it.key to it.value.toMutableMap() }.toMap()
         points[File.A]!![Rank.ONE] = Rook(Team.WHITE)
         points[File.A]!![Rank.SIX] = Rook(Team.BLACK)
@@ -105,7 +105,7 @@ class BoardTest {
     }
 
     @Test
-    fun moveKnightWithObstacle() {
+    fun `나이트는 움직인 경로에 기물이 있어도 됨`() {
         val points: Map<File, MutableMap<Rank, Piece?>> = EMPTY_BOARD.map { it.key to it.value.toMutableMap() }.toMap()
         points[File.A]!![Rank.ONE] = Knight(Team.WHITE)
         points[File.A]!![Rank.TWO] = Rook(Team.BLACK)

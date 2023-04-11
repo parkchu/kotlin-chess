@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class GameTest {
     @Test
-    fun startGame() {
+    fun `게임을 시작함`() {
         val game = Game()
 
         game.start()
