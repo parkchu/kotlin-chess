@@ -38,9 +38,9 @@ class BoardTest {
 
         board.move(currentCoordinate, targetCoordinate)
 
-        val sourcePoint = board.find(currentCoordinate)
+        val currentPoint = board.find(currentCoordinate)
         val targetPoint = board.findNotNull(targetCoordinate)
-        assertThat(sourcePoint).isNull()
+        assertThat(currentPoint).isNull()
         assertThat(targetPoint.isWhite()).isTrue
         assertThat(targetPoint::class).isEqualTo(Pawn::class)
     }
@@ -56,9 +56,9 @@ class BoardTest {
 
         board.move(currentCoordinate, targetCoordinate)
 
-        val sourcePoint = board.find(currentCoordinate)
+        val currentPoint = board.find(currentCoordinate)
         val targetPoint = board.findNotNull(targetCoordinate)
-        assertThat(sourcePoint).isNull()
+        assertThat(currentPoint).isNull()
         assertThat(targetPoint.isWhite()).isTrue
         assertThat(targetPoint::class).isEqualTo(Rook::class)
     }
@@ -76,10 +76,10 @@ class BoardTest {
             board.move(currentCoordinate, targetCoordinate)
         }.isInstanceOf(IllegalArgumentException::class.java).hasMessage("해당 좌표로 움직일 수 없습니다. ($targetCoordinate)")
 
-        val sourcePoint = board.findNotNull(currentCoordinate)
+        val currentPoint = board.findNotNull(currentCoordinate)
         val targetPoint = board.findNotNull(targetCoordinate)
-        assertThat(sourcePoint.isWhite()).isTrue
-        assertThat(sourcePoint::class).isEqualTo(Rook::class)
+        assertThat(currentPoint.isWhite()).isTrue
+        assertThat(currentPoint::class).isEqualTo(Rook::class)
         assertThat(targetPoint.isWhite()).isTrue
         assertThat(targetPoint::class).isEqualTo(Rook::class)
     }
@@ -97,10 +97,10 @@ class BoardTest {
             board.move(currentCoordinate, targetCoordinate)
         }.isInstanceOf(IllegalArgumentException::class.java).hasMessage("해당 좌표로 움직일 수 없습니다. ($targetCoordinate)")
 
-        val sourcePoint = board.findNotNull(currentCoordinate)
+        val currentPoint = board.findNotNull(currentCoordinate)
         val targetPoint = board.find(targetCoordinate)
-        assertThat(sourcePoint.isWhite()).isTrue
-        assertThat(sourcePoint::class).isEqualTo(Rook::class)
+        assertThat(currentPoint.isWhite()).isTrue
+        assertThat(currentPoint::class).isEqualTo(Rook::class)
         assertThat(targetPoint).isNull()
     }
 
@@ -115,9 +115,9 @@ class BoardTest {
 
         board.move(currentCoordinate, targetCoordinate)
 
-        val sourcePoint = board.find(currentCoordinate)
+        val currentPoint = board.find(currentCoordinate)
         val targetPoint = board.findNotNull(targetCoordinate)
-        assertThat(sourcePoint).isNull()
+        assertThat(currentPoint).isNull()
         assertThat(targetPoint.isWhite()).isTrue
         assertThat(targetPoint::class).isEqualTo(Knight::class)
     }
@@ -135,10 +135,28 @@ class BoardTest {
             board.move(currentCoordinate, targetCoordinate)
         }.isInstanceOf(IllegalArgumentException::class.java).hasMessage("해당 좌표로 움직일 수 없습니다. ($targetCoordinate)")
 
-        val sourcePoint = board.findNotNull(currentCoordinate)
+        val currentPoint = board.findNotNull(currentCoordinate)
         val targetPoint = board.find(targetCoordinate)
-        assertThat(sourcePoint.isWhite()).isTrue
-        assertThat(sourcePoint::class).isEqualTo(Pawn::class)
+        assertThat(currentPoint.isWhite()).isTrue
+        assertThat(currentPoint::class).isEqualTo(Pawn::class)
         assertThat(targetPoint).isNull()
+    }
+
+    @Test
+    fun `폰이 랭크 끝에 도착하면 승진함`() {
+        val points: Map<File, MutableMap<Rank, Piece?>> = EMPTY_BOARD.map { it.key to it.value.toMutableMap() }.toMap()
+        points[File.A]!![Rank.SEVEN] = Pawn(Team.WHITE, false)
+        val board = Board(points)
+        val currentCoordinate = Coordinate("a7")
+        val targetCoordinate = Coordinate("a8")
+        board.move(currentCoordinate, targetCoordinate)
+
+        board.promotion(targetCoordinate, Queen(Team.WHITE))
+
+        val currentPoint = board.find(currentCoordinate)
+        val targetPoint = board.findNotNull(targetCoordinate)
+        assertThat(currentPoint).isNull()
+        assertThat(targetPoint.isWhite()).isTrue
+        assertThat(targetPoint::class).isEqualTo(Queen::class)
     }
 }

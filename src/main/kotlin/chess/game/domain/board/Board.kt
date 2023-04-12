@@ -71,6 +71,18 @@ class Board(
         ranks[coordinate.rank] = piece
     }
 
+    fun promotion(coordinate: Coordinate, targetPiece: Piece) {
+        val currentPiece = findNotNull(coordinate)
+        if (!(currentPiece.isPawn() && coordinate.rank == Rank.EIGHT)) {
+            throw IllegalArgumentException("해당 좌표의 기물은 승진할 수 없습니다. ($coordinate)")
+        }
+        if (targetPiece.isPawn() || targetPiece.isKing() || targetPiece.isEnemy(currentPiece)) {
+            throw IllegalArgumentException("해당 기물로 승진할 수 없습니다. ($targetPiece)")
+        }
+
+        setPiece(coordinate, targetPiece)
+    }
+
     companion object {
         private val TEAM =
             mapOf(Rank.ONE to Team.WHITE, Rank.TWO to Team.WHITE, Rank.SEVEN to Team.BLACK, Rank.EIGHT to Team.BLACK)

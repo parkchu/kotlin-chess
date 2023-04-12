@@ -30,6 +30,8 @@ abstract class Piece(
     open fun isKnight(): Boolean = false
 
     open fun isPawn(): Boolean = false
+
+    open fun isKing(): Boolean = false
 }
 
 enum class Team(val forwardDirection: Int) {
