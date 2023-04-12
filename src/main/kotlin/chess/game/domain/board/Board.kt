@@ -27,40 +27,42 @@ class Board(
     }
 
     fun move(currentCoordinate: Coordinate, targetCoordinate: Coordinate) {
-        if (isImmovable(currentCoordinate, targetCoordinate)) {
+        if (!isMovable(currentCoordinate, targetCoordinate)) {
             throw IllegalArgumentException("해당 좌표로 움직일 수 없습니다. ($targetCoordinate)")
         }
         val piece = findNotNull(currentCoordinate)
 
+        if (piece.isPawn()) {
+            movePawn(piece)
+        }
         setPiece(currentCoordinate, null)
         setPiece(targetCoordinate, piece)
     }
 
-    private fun isImmovable(currentCoordinate: Coordinate, targetCoordinate: Coordinate): Boolean {
+    private fun isMovable(currentCoordinate: Coordinate, targetCoordinate: Coordinate): Boolean {
         val piece = findNotNull(currentCoordinate)
         val distance = currentCoordinate.getDistance(targetCoordinate)
 
         if (piece.isKnight() || isWithoutObstacle(currentCoordinate, targetCoordinate)) {
-            return !(piece.isMovable(distance) && isMovable(targetCoordinate, piece.team))
+            return piece.isMovable(distance, find(targetCoordinate))
         }
-        return true
+        return false
     }
 
     private fun isWithoutObstacle(currentCoordinate: Coordinate, targetCoordinate: Coordinate): Boolean {
         val distance = currentCoordinate.getDistance(targetCoordinate)
         val nextCoordinate = currentCoordinate.move(distance.getFileDirection(), distance.getRankDirection())
 
-        if (nextCoordinate.getDistance(targetCoordinate).isImmovable()) {
+        if (nextCoordinate.getDistance(targetCoordinate).isStationary()) {
             return true
         }
         find(nextCoordinate) ?: return isWithoutObstacle(nextCoordinate, targetCoordinate)
         return false
     }
 
-    private fun isMovable(coordinate: Coordinate, team: Team): Boolean {
-        val piece = find(coordinate)
-
-        return piece == null || piece.isEnemy(team)
+    private fun movePawn(piece: Piece) {
+        piece as Pawn
+        piece.move()
     }
 
     private fun setPiece(coordinate: Coordinate, piece: Piece?) {

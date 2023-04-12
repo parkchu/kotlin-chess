@@ -121,4 +121,24 @@ class BoardTest {
         assertThat(targetPoint.isWhite()).isTrue
         assertThat(targetPoint::class).isEqualTo(Knight::class)
     }
+
+    @Test
+    fun `이미 움직인 폰은 앞으로 두칸 이동할 수 없음`() {
+        val points: Map<File, MutableMap<Rank, Piece?>> = EMPTY_BOARD.map { it.key to it.value.toMutableMap() }.toMap()
+        points[File.A]!![Rank.TWO] = Pawn(Team.WHITE)
+        val board = Board(points)
+        board.move(Coordinate("a2"), Coordinate("a4"))
+        val currentCoordinate = Coordinate("a4")
+        val targetCoordinate = Coordinate("a6")
+
+        assertThatThrownBy {
+            board.move(currentCoordinate, targetCoordinate)
+        }.isInstanceOf(IllegalArgumentException::class.java).hasMessage("해당 좌표로 움직일 수 없습니다. ($targetCoordinate)")
+
+        val sourcePoint = board.findNotNull(currentCoordinate)
+        val targetPoint = board.find(targetCoordinate)
+        assertThat(sourcePoint.isWhite()).isTrue
+        assertThat(sourcePoint::class).isEqualTo(Pawn::class)
+        assertThat(targetPoint).isNull()
+    }
 }
